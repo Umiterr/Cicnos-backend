@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 // Obtener lista de usuarios
@@ -58,7 +59,7 @@ module.exports.getUserInfo = (req, res) => {
 module.exports.createUser = (req, res) => {
   if (!req.body) {
     return res.status(400).send({
-      message: "No se proporcionaron datos en el cuerpo de la solicitud.",
+      message: `No se proporcionaron datos en el cuerpo de la solicitud. ${req.body}`,
     });
   }
 
@@ -131,15 +132,16 @@ module.exports.login = (req, res) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      //      res.send({ status: true });
-
+      // Generar token JWT
       const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "7d",
       });
+
+      // Enviar el token como respuesta al cliente
       res.send({ token });
     })
     .catch((err) => {
-      // error de autenticación
+      // Error de autenticación
       res.status(401).send({ message: err.message });
     });
 };

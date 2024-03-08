@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    default: "Jacques Cousteau",
+    default: "Chell  Redacted",
     required: true,
     minlength: 3,
     maxlength: 30,
@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     default:
-      "https://practicum-content.s3.us-west-1.amazonaws.com/resources/moved_avatar_1604080799.jpg",
+      "https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fi.imgur.com%2FhU8yE56.jpg&sp=1709885203T4056af864d3b5a6c4ae14e602281752d613512e10a059aeb4ed42e885c1abb21",
     validate: {
       validator: function (v) {
         /^(https?:\/\/)?(www\.)?[a-zA-Z0-9._~:/?%#@\[\]!$&'()*+,;=]+(\/[a-zA-Z0-9._~:/?%#@\[\]!$&'()*+,;=]+)?(#.*)?$/i.test(
@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
   },
   about: {
     type: String,
-    default: "Explorador",
+    default: "D-Class Personnel",
     minlength: 2,
     maxlength: 30,
   },

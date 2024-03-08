@@ -15,8 +15,11 @@ console.log(process.env.NODE_ENV);
 // initializing a basic API that
 // returns the "Hello, World!" message
 app.get("/", (req, res) => {
-  res.json("Holi, estoy vivo :)");
+  res.json("Hello, world!");
 });
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routers
 
@@ -52,7 +55,7 @@ app.use(
 mongoose
   .connect("mongodb://localhost:27017/cicnos-database")
   .then(() => {
-    console.log("Conexión exitosa a la base de datos");
+    console.log(`Conexión exitosa a la base de datos`);
   })
   .catch((error) => {
     console.error("Error al conectar a la base de datos:", error);
@@ -61,7 +64,7 @@ mongoose
 app.use(express.static(path.join(__dirname, "public")));
 
 app.listen(PORT, () => {
-  console.log("Enlace al servidor");
+  console.log(`Enlace al servidor en el puerto: ${PORT}`);
 });
 
 app.use((_, res) => {
