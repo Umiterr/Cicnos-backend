@@ -55,29 +55,35 @@ module.exports.getUserInfo = (req, res) => {
     });
 };
 
-// Crear usuario
-module.exports.createUser = (req, res) => {
-  if (!req.body) {
-    return res.status(400).send({
-      message: `No se proporcionaron datos en el cuerpo de la solicitud. ${req.body}`,
-    });
-  }
-
-  const { name, about, avatar, email, password } = req.body;
-
-  bcrypt
-    .hash(password, 10)
-    .then((hash) => {
-      return User.create({
-        name,
-        about,
-        avatar,
-        email,
-        password: hash,
+module.exports.createUser = async (req, res) => {
+  try {
+    if (!req.body) {
+      return res.status(400).send({
+        message: "No se proporcionaron datos en el cuerpo de la solicitud.",
       });
-    })
-    .then((user) => res.send({ data: user }))
-    .catch((err) => res.status(500).send({ message: err.message }));
+    }
+
+    const { name, about, avatar, email, password } = req.body;
+
+    const hash = await bcrypt.hash(password, 10);
+    const newUser = await User.create({
+      name,
+      about,
+      avatar,
+      email,
+      password: hash,
+    });
+
+    const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    res.send({ token });
+  } catch (err) {
+    // Manejar errores adecuadamente
+    console.error(err);
+    res.status(500).send({ message: "Error interno del servidor." });
+  }
 };
 
 // Actualizar usuario
