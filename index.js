@@ -34,12 +34,22 @@ const validateURL = (value, helpers) => {
   return helpers.error("string.uri");
 };
 
+const productRoute = require("./routes/product");
+const { addProduct } = require("./controllers/product");
+
+const cartRoute = require("./routes/cart");
+
 // Routes
 
 app.post("/signin", login);
 app.post("/signup", createUser);
 
+app.post("/addProduct", addProduct);
+
 app.use(auth);
+
+app.use("/products", productRoute);
+app.use("/carts", cartRoute);
 
 // Rutas de usuario
 app.use(

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
+const Product = require("./product");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -47,6 +48,26 @@ const userSchema = new mongoose.Schema({
     maxlength: 100,
     select: false,
   },
+  address: {
+    city: String,
+    street: String,
+    number: Number,
+    zipcode: String,
+  },
+  phone: String,
+  products: [
+    {
+      productId: {
+        type: mongoose.Schema.Types.Number,
+        ref: Product,
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
 });
 
 userSchema.statics.findUserByCredentials = function findUserByCredentials(

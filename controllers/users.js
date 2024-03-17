@@ -72,6 +72,7 @@ module.exports.createUser = async (req, res) => {
       avatar,
       email,
       password: hash,
+      cart: [],
     });
 
     const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET, {
