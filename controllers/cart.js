@@ -1,4 +1,5 @@
 const Cart = require("../models/cart");
+const User = require("../controllers/users");
 
 module.exports.getCartsbyUserid = (req, res) => {
   const userId = req.params.userid;
@@ -18,6 +19,10 @@ module.exports.getCartsbyUserid = (req, res) => {
 };
 
 module.exports.addCart = async (req, res) => {
+  const { _id } = req.user;
+
+  const userId = _id;
+
   try {
     if (typeof req.body === "undefined") {
       return res.json({
@@ -26,21 +31,11 @@ module.exports.addCart = async (req, res) => {
       });
     }
 
-    // Busca el usuario por su ID
-    const user = await User.findById(req.body.userId);
-
-    if (!user) {
-      return res.status(404).json({
-        status: "error",
-        message: "User not found",
-      });
-    }
-
     // Crea el carrito y asígnalo al usuario
     const cart = new Cart({
-      userId: user._id,
+      userId: userId.toString(),
       date: new Date(),
-      products: req.body.products,
+      products: [],
     });
 
     await cart.save();
@@ -56,15 +51,16 @@ module.exports.addCart = async (req, res) => {
 };
 
 module.exports.editCart = (req, res) => {
-  if (typeof req.body == undefined || req.params.id == null) {
+  const { _id } = req.user;
+  if (typeof req.body == undefined || _id == null) {
     res.json({
       status: "error",
       message: "something went wrong! check your sent data",
     });
   } else {
     res.json({
-      id: parseInt(req.params.id),
-      userId: req.body.userId,
+      id: parseInt(_id),
+      userId: _id,
       date: req.body.date,
       products: req.body.products,
     });
