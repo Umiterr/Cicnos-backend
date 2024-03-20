@@ -59,12 +59,7 @@ module.exports.addProduct = async (req, res) => {
         message: "No se proporcionaron datos en el cuerpo de la solicitud.",
       });
     }
-    // let productCount = 0;
-    // Product.find()
-    //   .countDocuments(function (err, count) {
-    //     productCount = count;
-    //   })
-    //   .then(() => {
+
     const newProduct = await Product.create({
       id: req.body.id,
       name: req.body.title,
@@ -83,13 +78,9 @@ module.exports.addProduct = async (req, res) => {
       description: req.body.description || "",
       details: req.body.details || [],
     });
-    // product.save()
-    //   .then(product => res.json(product))
-    //   .catch(err => console.log(err))
+
     res.send(newProduct);
-    // });
   } catch (err) {
-    // Manejar errores adecuadamente
     console.error(err);
     res.status(500).send({ message: "Error interno del servidor." });
   }
