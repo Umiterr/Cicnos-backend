@@ -12,12 +12,6 @@ const { NODE_ENV, PORT, JWT_SECRET } = process.env;
 
 console.log(process.env.NODE_ENV);
 
-// initializing a basic API that
-// returns the "Hello, World!" message
-app.get("/", (req, res) => {
-  res.json("Hello, world!");
-});
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -54,11 +48,7 @@ app.use("/carts", cartRoute);
 // Rutas de usuario
 app.use(
   "/",
-  celebrate({
-    body: {
-      link: Joi.string().required().custom(validateURL),
-    },
-  }),
+
   userRouter
 );
 

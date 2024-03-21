@@ -90,11 +90,11 @@ module.exports.createUser = async (req, res) => {
 // Actualizar usuario
 module.exports.updateUser = (req, res) => {
   const { _id } = req.user;
-  const { newName } = req.body;
+  const { name, about } = req.body;
 
   User.findByIdAndUpdate(
     _id,
-    { name: newName },
+    { name: name, about: about },
     {
       new: true,
       runValidators: true,
@@ -130,7 +130,6 @@ module.exports.updateAvatar = (req, res) => {
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
-  // Validar que se proporcionó un correo electrónico y una contraseña
   if (!email || !password) {
     return res
       .status(400)
@@ -139,16 +138,13 @@ module.exports.login = (req, res) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      // Generar token JWT
       const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "7d",
       });
 
-      // Enviar el token como respuesta al cliente
       res.send({ token });
     })
     .catch((err) => {
-      // Error de autenticación
       res.status(401).send({ message: err.message });
     });
 };
