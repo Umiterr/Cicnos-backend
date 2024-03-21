@@ -6,7 +6,7 @@ const Product = require("./product");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    default: "Chell  Redacted",
+    default: "Usuario",
     required: true,
     minlength: 3,
     maxlength: 30,
@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
   },
   about: {
     type: String,
-    default: "D-Class Personnel",
+    default: "Descripcion",
     minlength: 2,
     maxlength: 30,
   },
